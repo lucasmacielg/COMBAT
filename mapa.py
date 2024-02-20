@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 import pygame
 import sys
 
@@ -5,6 +7,7 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 BLOCK_SIZE = 10
 WHITE = (255, 255, 255)
+
 def generate_walls(x, y):
     obstacles = []
     with open('labirinto.txt', 'r') as file:
@@ -16,9 +19,9 @@ def generate_walls(x, y):
             for column in range(y):
                 if wall_row[column] == '1':
                     obstacles.append((posx_block, posy_block))
-                posx_block += BLOCK_SIZE
+                    posx_block += BLOCK_SIZE
             posy_block -= BLOCK_SIZE
-    return obstacles
+        return obstacles
 
 def draw_obstacles(screen, obstacles):
     for obstacle in obstacles:
