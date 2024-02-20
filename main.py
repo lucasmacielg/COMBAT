@@ -31,7 +31,7 @@ def main():
     while running:
         screen.fill((0, 0, 0))
         blocks = draw_maze(screen, maze)  # Aqui você obtém os blocos do labirinto
-
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -41,20 +41,23 @@ def main():
                     dx = player1.rect.centerx - SCREEN_WIDTH // 2
                     dy = player1.rect.centery - SCREEN_HEIGHT // 2
                     angle = math.atan2(dy, dx)
-                    bullet = Bullet(WHITE, player1.rect.centerx, player1.rect.centery, math.degrees(angle))
+                    bullet = Bullet(WHITE, (player1.rect.centerx, player1.rect.centery), (math.cos(angle), math.sin(angle)))
                     bullets.add(bullet)
                 elif event.key == pygame.K_RETURN:
                     # Determina a direção da bala para o jogador 2
                     dx = player2.rect.centerx - SCREEN_WIDTH // 2
                     dy = player2.rect.centery - SCREEN_HEIGHT // 2
                     angle = math.atan2(dy, dx)
-                    bullet = Bullet(WHITE, player2.rect.centerx, player2.rect.centery, math.degrees(angle))
+                    bullet = Bullet(WHITE, (player2.rect.centerx, player2.rect.centery), (math.cos(angle), math.sin(angle)))
                     bullets.add(bullet)
+
+        # Atualize todas as balas individualmente
+        for bullet in bullets:
+            bullet.update(blocks,players)
 
         player1.update(players, blocks)  
         player2.update(players, blocks) 
 
-        bullets.update()
         players.draw(screen)
         bullets.draw(screen)
         pygame.display.flip()

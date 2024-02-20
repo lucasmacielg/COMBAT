@@ -1,9 +1,5 @@
 import pygame
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-BLOCK_SIZE = 10
-WHITE = (255, 255, 255)
+from constants import BLOCK_SIZE, WHITE
 
 def generate_walls(x, y):
     obstacles = []

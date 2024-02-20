@@ -19,6 +19,14 @@ class Player(pygame.sprite.Sprite):
         self.speed = 2
         self.controls = controls
         self.wall_rects = [] 
+        self.health = 30  
+        
+
+    def hit(self):
+        self.health -= 10  
+        if self.health <= 0:
+            self.kill()  
+        
 
     def shoot(self, bullets):
         bullet = Bullet((255, 0, 0), self.rect.centerx, self.rect.centery, self.angle)
