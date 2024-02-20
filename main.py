@@ -68,7 +68,7 @@ def main():
                     bullet = Bullet(WHITE, player2.rect.centerx, player2.rect.centery, math.degrees(angle))
                     bullets.add(bullet)
 
-        players.update(obstacles,players)
+        players.update(players)
         bullets.update()
         players.draw(screen)
         bullets.draw(screen)
