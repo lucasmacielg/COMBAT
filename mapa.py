@@ -1,7 +1,4 @@
-from typing import List, Tuple
-
 import pygame
-import sys
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
