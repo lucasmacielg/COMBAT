@@ -6,43 +6,66 @@ from bullet import Bullet
 
 PLAYER_SPEED = 5
 obstacles = generate_walls(40, 40)
-BLOCK_SIZE = 10 
+BLOCK_SIZE = 10
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, color, x, y, controls):
+    DIR_MAP = {
+        'up': (0, -1),
+        'down': (0, 1),
+        'left': (-1, 0),
+        'right': (1, 0),
+    }
+
+    def __init__(self, x, y, controls):
         super().__init__()
-        self.image = pygame.Surface([15, 15])
-        self.image.fill(color)
+        self.images = {
+            'up': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank.png"), (20, 20)),
+            'down': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank2.png"), (20, 20)),
+            'left': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank3.png"), (20, 20)),
+            'right': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank1.png"), (20, 20)),
+        }
+        self.image = self.images['up']  # Imagem inicial
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.speed = 2
         self.controls = controls
-        self.wall_rects = [] 
-        self.health = 30  
-        
+        self.wall_rects = []
+        self.health = 30
+        self.bullets = pygame.sprite.Group()
+        self.dir = 'up'  # Adiciona um atributo 'dir' para armazenar a direção atual do jogador
+
+    def shoot(self):
+        dir = self.DIR_MAP[self.dir]
+        bullet = Bullet((255, 0, 0), (self.rect.centerx, self.rect.centery), dir)
+        self.bullets.add(bullet)
 
     def hit(self):
-        self.health -= 10  
+        self.health -= 10
         if self.health <= 0:
-            self.kill()  
-        
+            self.kill()
 
-    def shoot(self, bullets):
-        bullet = Bullet((255, 0, 0), self.rect.centerx, self.rect.centery, self.angle)
-        bullets.add(bullet)
-        
     def update(self, players, blocks):
         keys = pygame.key.get_pressed()
         new_rect = self.rect.copy()
         if keys[self.controls['up']]:
             new_rect.y -= PLAYER_SPEED
+            self.image = self.images['up']
+            self.dir = 'up'
         if keys[self.controls['down']]:
             new_rect.y += PLAYER_SPEED
+            self.image = self.images['down']
+            self.dir = 'down'
         if keys[self.controls['left']]:
             new_rect.x -= PLAYER_SPEED
+            self.image = self.images['left']
+            self.dir = 'left'
         if keys[self.controls['right']]:
             new_rect.x += PLAYER_SPEED
+            self.image = self.images['right']
+            self.dir = 'right'
+
+        self.bullets.update(blocks, players)
 
         # Verifica a colisão com os blocos do labirinto
         for block in blocks:
