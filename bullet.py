@@ -1,5 +1,6 @@
 import pygame
 from constants import BLOCK_SIZE
+import math
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -10,11 +11,16 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
         self.speed = 10
-        # Verifica se os valores de dir são números
         if isinstance(dir[0], (int, float)) and isinstance(dir[1], (int, float)):
-            self.dir = dir
+            self.dir = self.normalize(dir)  # Normalizing the direction vector
         else:
             raise ValueError("Os valores de dir devem ser números.")
+
+    def normalize(self, vector):
+        magnitude = math.sqrt(vector[0]**2 + vector[1]**2)
+        if magnitude == 0:
+            return (0, 0)
+        return (vector[0] / magnitude, vector[1] / magnitude)
 
     def update(self, walls, players):
         self.rect.x += self.dir[0] * self.speed

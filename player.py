@@ -19,10 +19,10 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, controls):
         super().__init__()
         self.images = {
-            'up': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank.png"), (20, 20)),
-            'down': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank2.png"), (20, 20)),
-            'left': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank3.png"), (20, 20)),
-            'right': pygame.transform.scale(pygame.image.load("F:/git clones/COMBAT/assets/tank1.png"), (20, 20)),
+            'up': pygame.transform.scale(pygame.image.load("assets/tank.png"), (20, 20)),
+            'down': pygame.transform.scale(pygame.image.load("assets/tank2.png"), (20, 20)),
+            'left': pygame.transform.scale(pygame.image.load("assets/tank3.png"), (20, 20)),
+            'right': pygame.transform.scale(pygame.image.load("assets/tank1.png"), (20, 20)),
         }
         self.image = self.images['up']  # Imagem inicial
         self.rect = self.image.get_rect()
@@ -42,8 +42,7 @@ class Player(pygame.sprite.Sprite):
 
     def hit(self):
         self.health -= 10
-        if self.health <= 0:
-            self.kill()
+
 
     def update(self, players, blocks):
         keys = pygame.key.get_pressed()
@@ -65,7 +64,10 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images['right']
             self.dir = 'right'
 
-        self.bullets.update(blocks, players)
+        bullets_copy = self.bullets.sprites()[:]  # Faz uma cópia do grupo de balas
+
+        for bullet in bullets_copy:  # Itera sobre a cópia
+            bullet.update(blocks, players)
 
         # Verifica a colisão com os blocos do labirinto
         for block in blocks:

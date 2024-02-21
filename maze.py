@@ -13,7 +13,7 @@ def load_maze():
 def draw_maze(screen, maze):
     block_size = 10
     blocks = []
-    block_image = pygame.image.load('F:/git clones/COMBAT/assets/wall_orginal.bmp')  # Carrega a imagem do asset
+    block_image = pygame.image.load('assets/wall_orginal.bmp')  # Carrega a imagem do asset
     block_image = pygame.transform.scale(block_image, (block_size, block_size))  # Redimensiona a imagem para o tamanho do bloco
     for y, row in enumerate(maze):
         for x, cell in enumerate(row):

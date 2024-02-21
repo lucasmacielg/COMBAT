@@ -9,7 +9,7 @@ WHITE = (255, 255, 255)
 
 WIDTH, HEIGHT = 720, 480
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Pong Game")
+pygame.display.set_caption("Combat Game")
 
 BG = pygame.image.load("assets/Background.png")
 surface = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -17,12 +17,12 @@ surface = pygame.display.set_mode((WIDTH, HEIGHT))
 def get_font(size):
     return pygame.font.Font("assets/font.ttf", size)
 
-
 def play():
     main()
 
 
 def main_menu():
+    screen = pygame.display.set_mode((WIDTH, HEIGHT)) 
     while True:
         SCREEN.blit(BG, (0, 0))
 
@@ -55,11 +55,13 @@ def main_menu():
                     play()
                 if INSTRUCTIONS.checkForInput(MENU_MOUSE_POS):
                     pygame.time.delay(200)
+                    font = get_font(30)
                     text1 = font.render("PLAYER 1: Use WASD keys to move, SPACE to shoot", True, WHITE)
                     text2 = font.render("PLAYER 2: Use arrow keys to move, ENTER to shoot", True, WHITE)
+                    
+                    screen.fill((0, 0, 0))  # preenche a tela com preto
                     screen.blit(text1, (50, 50))
                     screen.blit(text2, (50, 100))
-                    pygame.display.flip()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
